@@ -7,7 +7,7 @@ A REST API for managing animals that are being held in an animal shelter. Built 
 - User registration and authentication
 - JWT-based authentication
 - CRUD operations for tasks
-- User-specific task management
+- User-specific animal shelter management
 - SQLite database with Sequelize ORM
 
 ## API Endpoints
