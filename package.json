@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "start": "node server.js",
     "setup": "node database/setup.js",
     "seed": "node database/seed.js"
@@ -29,5 +29,11 @@
     "sequelize": "^6.37.8",
     "sqlite3": "^6.0.1",
     "dotenv": "^16.1.4"
+  }
+  ,
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "cross-env": "^7.0.3"
   }
 }

@@ -480,13 +480,23 @@ app.delete('/api/animals/:id', requireAuth, authorize('admin'), async (req, res)
         // Find animal by id (admin only reaches here due to authorize middleware)
         const animal = await Animal.findByPk(req.params.id);
         if (!animal) return res.status(404).json({ error: 'Animal not found' });
-        await animal.destroy() && await Requirements.destroy({ where: { animalId: animal.id } }) && await Markers.destroy({ where: { animalId: animal.id } });
-        
-        res.json({
-            message: 'Animal deleted successfully',
-            name: animal.name,
-            id: animal.id
-        });
+        // delete related requirements and markers in a transaction
+        const t = await db.transaction();
+        try {
+            await Requirements.destroy({ where: { animalId: animal.id }, transaction: t });
+            await Markers.destroy({ where: { animalId: animal.id }, transaction: t });
+            await animal.destroy({ transaction: t });
+            await t.commit();
+
+            return res.json({
+                message: 'Animal and related data deleted successfully',
+                name: animal.name,
+                id: animal.id
+            });
+        } catch (err) {
+            await t.rollback();
+            throw err;
+        }
         
     } catch (error) {
         console.error('Error deleting animal:', error);
@@ -511,9 +521,13 @@ app.use((req, res) => {
     });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on port http://localhost:${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV}`);
-    console.log(`Health check: http://localhost:${PORT}/`);
-});
+// Start server only when invoked directly
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port http://localhost:${PORT}`);
+        console.log(`Environment: ${process.env.NODE_ENV}`);
+        console.log(`Health check: http://localhost:${PORT}/`);
+    });
+}
+
+module.exports = app;
