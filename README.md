@@ -79,7 +79,7 @@ You can use these accounts to test the API without having to register new users.
 - **Admin:** Can view all animals, their health requirements, and their health markers. Can add new animals, health requirements, and health markers, and can update all animals/health requirements/health markers. Is allowed to remove any animal, as well as their corresponding health requirements/health markers, from the database
 
 ### Postman Documentation
-Postman Documentation for this REST API can be found through this link: **[link](https://documenter.getpostman.com/view/52397591/2sBXitD7UE)**
+Postman Documentation for this REST API can be found through this link: **[Postman Documenation](https://documenter.getpostman.com/view/52397591/2sBXitD7UE)**
 
 ### Testing
 Use the following sample requests to test the API:
