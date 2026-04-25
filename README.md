@@ -81,6 +81,9 @@ You can use these accounts to test the API without having to register new users.
 ### Postman Documentation
 Postman Documentation for this REST API can be found through this link: **[Postman Documenation](https://documenter.getpostman.com/view/52397591/2sBXitD7UE)**
 
+### Render Deployment
+The Render Deployment for this REST API can be found through this link: **[Render Deployment](https://animal-shelter-management.onrender.com/)
+
 ### Testing
 Use the following sample requests to test the API:
 
