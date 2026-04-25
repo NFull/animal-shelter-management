@@ -323,8 +323,10 @@ app.post('/api/animals', requireAuth, authorize('admin','vet','assistant'), asyn
 app.post('/api/animals/:id/requirements', requireAuth, authorize('vet','admin'), async (req, res) => {
     try {
         const animal = await Animal.findByPk(req.params.id);
-
         if (!animal) return res.status(404).json({ error: 'Animal not found' });
+
+        const requirement = await Requirements.findOne({ where: { animalId: animal.id } });
+        if (requirement) return res.status(400).json({ error: 'Health requirement for animal already exists, must update' });
 
         const { medications, careOutline, quarantine } = req.body;
 
@@ -353,8 +355,10 @@ app.post('/api/animals/:id/requirements', requireAuth, authorize('vet','admin'),
 app.post('/api/animals/:id/markers', requireAuth, authorize('vet','admin'), async (req, res) => {
     try {
         const animal = await Animal.findByPk(req.params.id);
-
         if (!animal) return res.status(404).json({ error: 'Animal not found' });
+
+        const marker = await Markers.findOne({ where: { animalId: animal.id } });
+        if (marker) return res.status(400).json({ error: 'Health marker for animal already exists, must update' });
 
         const { height, weight, diet, vaccines, status } = req.body;
 

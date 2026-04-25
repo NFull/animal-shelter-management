@@ -36,6 +36,16 @@ describe('Requirements CRUD', () => {
     requirementId = res.body.requirement.id;
   });
 
+  test('vet cannot create a second requirement for the same animal', async () => {
+    const res = await request(app)
+      .post(`/api/animals/${animalId}/requirements`)
+      .set('Authorization', `Bearer ${vetToken}`)
+      .send({ medications: 'Med B', careOutline: 'Do Y', quarantine: false });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Health requirement for animal already exists, must update');
+  });
+
   test('assistant can read their animal requirement', async () => {
     const res = await request(app)
       .get(`/api/animals/${animalId}/requirements`)

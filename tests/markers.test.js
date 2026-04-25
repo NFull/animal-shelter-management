@@ -36,6 +36,16 @@ describe('Markers CRUD', () => {
     markerId = res.body.marker.id;
   });
 
+  test('vet cannot create a second marker for the same animal', async () => {
+    const res = await request(app)
+      .post(`/api/animals/${animalId}/markers`)
+      .set('Authorization', `Bearer ${vetToken}`)
+      .send({ height: 31, weight: 11, diet: 'Kibble2', vaccines: false, status: 'started' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Health marker for animal already exists, must update');
+  });
+
   test('assistant can read their animal marker', async () => {
     const res = await request(app)
       .get(`/api/animals/${animalId}/markers`)
